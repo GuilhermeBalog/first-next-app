@@ -20,7 +20,7 @@ export default function Home({ repositories }) {
 
         <div className={styles.grid}>
           {repositories.map(repo => (
-            <a href={`https://github.com/${repo.full_name}`} className={styles.card}>
+            <a href={repo.homepage || repo.html_url} className={styles.card} key={repo.id}>
               <h3>{repo.name} &rarr;</h3>
               <p>{repo.description}</p>
             </a>
