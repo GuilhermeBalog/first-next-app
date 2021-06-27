@@ -15,7 +15,7 @@ export default function Home({ repositories }) {
         </h1>
 
         <p className={styles.description}>
-          My repositories from Github
+          My repositories from <a href="https://github.com/GuilhermeBalog"><strong>Github</strong></a>
         </p>
 
         <div className={styles.grid}>
@@ -30,25 +30,37 @@ export default function Home({ repositories }) {
 
       <footer className={styles.footer}>
         <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+          href="https://guilhermebalog.ga"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
+          Made by <strong>Guilherme Balog</strong>
         </a>
       </footer>
     </div>
   )
 }
 
-export async function getStaticProps(){
-  const response = await fetch('https://api.github.com/users/guilhermebalog/repos')
+export async function getStaticProps() {
+  const response = await fetch('https://api.github.com/users/guilhermebalog/repos?per_page=100&sort=updated&direction=desc')
   const repositories = await response.json()
 
-  return { 
-    props: { 
-      repositories
-    }
+  return {
+    props: {
+      repositories: repositories.map(({
+        id,
+        name,
+        description,
+        homepage,
+        html_url
+      }) => ({
+        id,
+        name,
+        description,
+        homepage,
+        html_url
+      }))
+    },
+    revalidate: 60 * 60 * 24 // 1 day
   }
 }
